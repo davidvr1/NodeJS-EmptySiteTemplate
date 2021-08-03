@@ -12,5 +12,11 @@ pipeline {
       }
     }
 
+    stage('Install dependecies [Build]') {
+      steps {
+        sh 'npm install'
+      }
+    }
+
   }
 }
