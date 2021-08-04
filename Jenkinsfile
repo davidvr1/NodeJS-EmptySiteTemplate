@@ -46,7 +46,7 @@ pipeline {
 
     stage('notify slack') {
       steps {
-        slackSend(failOnError: true, channel: 'devops_kamatech')
+        slackSend(channel: 'devops_kamatech')
       }
     }
 
