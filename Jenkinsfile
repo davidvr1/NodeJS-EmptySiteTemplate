@@ -18,5 +18,37 @@ pipeline {
       }
     }
 
+    stage('running the application') {
+      steps {
+        sh 'npm start &'
+      }
+    }
+
+    stage('test the app') {
+      steps {
+        sh 'curl localhost:8080'
+      }
+    }
+
+    stage('kill app') {
+      steps {
+        sh 'pkill -f node'
+      }
+    }
+
+    stage('Package') {
+      steps {
+        zip(zipFile: 'package.zip', archive: true, dir: '.', overwrite: true)
+        archiveArtifacts(artifacts: 'package.zip', onlyIfSuccessful: true)
+        cleanWs(cleanWhenSuccess: true)
+      }
+    }
+
+    stage('notify slack') {
+      steps {
+        slackSend(failOnError: true, channel: 'devops_kamatech')
+      }
+    }
+
   }
 }
